@@ -1,0 +1,331 @@
+-----------------Experiment List-1 ------------------------
+
+
+Q1. You are given an array of integers arr[]. You have to reverse the given array.
+    Note: Modify the array in place.
+    Examples:
+    Input: arr = [1, 4, 3, 2, 6, 5]
+    Output: [5, 6, 2, 3, 4, 1]
+    Explanation: The elements of the array are [1, 4, 3, 2, 6, 5]. After reversing the 
+    array, the first element goes to the last position, the second element goes to the 
+    second last position and so on. Hence, the answer is [5, 6, 2, 3, 4, 1]
+
+Sol(1)-     class Solution {
+            public void reverseArray(int arr[]) {
+                // code here
+                int start = 0;
+                int end = arr.length;
+                while(start < end){
+                    int temp = arr[start];
+                    arr[start] = arr[end];
+                    arr[end] = temp;
+                    start++;
+                    end--;
+                }
+            }
+        }
+
+
+ Q2.    Given an array arr[]. Your task is to find the minimum and maximum elements 
+        in the array.
+        Examples:
+        Input: arr[] = [1, 4, 3, 5, 8, 6]
+        Output: [1, 8]
+        Explanation: minimum and maximum elements of array are 1 and 8.
+
+Sol(2)-  class Solution {
+          public ArrayList<Integer> getMinMax(int[] arr) {
+            ArrayList<Integer> Output = new ArrayList<>();
+              int min = arr[0];
+              int max = arr[0];
+              for(int i =0; i<arr.length; i++){
+                  if(arr[i] > max){
+                      max = arr[i];
+                  }
+                  if(arr[i] < min){
+                      min = arr[i];
+                  }
+                  }
+                  Output.add(min);
+                  Output.add(max);
+                  return Output;
+                  
+            }
+        }
+
+
+Q3.  Given an integer array arr[] and an integer k, your task is to find and return 
+      the k
+      th smallest element in the given array.
+      Note: The kth smallest element is determined based on the sorted order of the 
+      array.
+      Examples :
+      Input: arr[] = [10, 5, 4, 3, 48, 6, 2, 33, 53, 10], k = 4
+      Output: 5
+      Explanation: 4th smallest element in the given array is 5.
+
+
+Sol(3)- class Solution {
+        public int kthSmallest(int[] arr, int k) {
+            return quickSelect(arr, 0, arr.length-1, k-1);
+        }
+        private int quickSelect(int[] arr, int low, int high, int k) {
+              if(low <= high){
+                 int pivotIndex = partition(arr, low, high);
+        
+                 if(pivotIndex == k)
+                    return arr[pivotIndex];
+                else if(pivotIndex > k)
+                    return quickSelect(arr, low, pivotIndex-1, k);
+                else
+                    return quickSelect(arr, pivotIdex+1, high, k);
+                }
+                return -1;
+              }
+        
+        private int partition(int[] arr, int low, int high){
+            int pivot = arr[high];
+            int i = low;
+            for(int j=low; j< high; j++){
+                if(arr[j] <= pivot){
+                   int temp = arr[i];
+                   arr[i] = arr[j];
+                   arr[j] = temp;
+                    i++;
+                      }
+                  }
+
+
+
+Q4.   You are given two arrays a[] and b[], return the Union of both the arrays in any 
+      order.
+      The Union of two arrays is a collection of all distinct elements present in either of 
+      the arrays. If an element appears more than once in one or both arrays, it should be 
+      included only once in the result.
+      Note: Elements of a[] and b[] are not necessarily distinct.
+      Note that, You can return the Union in any order but the driver code will print the 
+      result in sorted order only.
+      Examples:
+      Input: a[] = [1, 2, 3, 2, 1], b[] = [3, 2, 2, 3, 3, 2]
+      Output: [1, 2, 3]
+      Explanation: Union set of both the arrays will be 1, 2 and 3.
+
+Sol(4)-  import java.util.ArrayList;
+         import java.util.Arrays;
+        
+         class Solution {
+        
+            //union 
+            public static ArrayList<Integer> findUnion(int arr1[], int arr2[]) {
+                
+                Arrays.sort(arr1);
+                Arrays.sort(arr2);
+                int i =0, j= 0;
+                ArrayList<Integer> result = new ArrayList<>();
+                while(i < arr1.length && j < arr2.length){
+                 //skipping dublicate
+                  if(i > 0 && arr1[i] == arr1[i-1]){
+                     i++;
+                     continue; 
+                  }
+                
+                  if(j > 0 && arr2[j] == arr2[j-1]){
+                      j++;
+                      continue;
+                  }
+
+//compare
+              if (arr1[i] < arr2[j]) {
+                  res.add(arr1[i]);
+                  i++;
+              }
+              else if (arr1[i] > arr2[j]) {
+                  res.add(arr2[j]);
+                  j++;
+              }
+              else {
+                  res.add(arr1[i]);
+                  i++;
+                  j++;
+              }
+          }
+
+          while(i < arr1.length){
+            if(i == 0 || arr1[i] != arr1[i-1]) {
+                result.add(arr1[i]);
+            }
+            i++;
+         }
+         while (j < arr2.length) {
+            if (j == 0 || arr2[j] != arr2[j - 1]) {
+                result.add(arr2[j]);
+            }
+            j++;
+        }
+      return result;
+  }
+}
+
+
+Q5. Given an array arr[]. The task is to find the largest element and return it.
+    Examples:
+    Input: arr[] = [1, 8, 7, 56, 90] 
+    Output: 90
+    Explanation: The largest element of the given array is 90.
+
+Sol(5)-   class Solution {
+          public static int largest(int[] arr) {
+              // code here
+              int max = arr[0];
+              for(int i =0; i<arr.length; i++){
+                  if(arr[i]>max){
+                      max = arr[i];
+                  }
+              }
+              return max;
+          }
+      }
+
+
+Q6. Given an array arr, rotate the array by one position in clockwise direction.
+    Examples:
+    Input: arr[] = [1, 2, 3, 4, 5]
+    Output: [5, 1, 2, 3, 4]
+    Explanation: If we rotate arr by one position in clockwise 5 come to the front and 
+    remaining those are shifted to the end.
+
+Sol(6)- class Solution{
+        public void rotate(int[] arr){
+            int temp = arr[arr.length-1];
+            for(int i = arr.length-1; i >0; i--){
+                arr[i] = arr[i-1];
+            }
+            arr[0] = temp;
+        
+           }
+        }
+
+
+
+Q7. You are given an integer array arr[]. You need to find the maximum sum of a 
+    subarray (containing at least one element) in the array arr[].
+    Note : A subarray is a continuous part of an array.
+    Examples:
+    Input: arr[] = [2, 3, -8, 7, -1, 2, 3]
+    Output: 11
+    Explanation: The subarray [7, -1, 2, 3] has the largest sum 11
+
+
+Sol(7)- class Solution {
+        int maxSubarraySum(int[] arr) {
+            // Code here
+            int sum =0; 
+            int max = arr[0];
+            for(int i=0; i<arr.length; i++){
+                sum +=arr[i];
+                if(sum>max){
+                    max=sum;
+                }
+                if(sum<0){
+                    sum =0;
+                }
+               
+            }
+             return max;
+            
+        }
+    }
+
+
+Q8.  Given a sorted array of distinct integers and a target value, return the index if the 
+      target is found. If not, return the index where it would be if it were inserted in 
+      order.
+      You must write an algorithm with O(log n) runtime complexity.
+      Example 1:
+      Input: nums = [1,3,5,6], target = 5
+      Output: 2
+
+
+Sol(8)- class Solution {
+        public int searchInsert(int[] nums, int target) {
+        int start =0;
+        int end = nums.length-1;
+        while(start <= end){
+          int mid = start + (end-start)/2;
+          if(target > nums[mid] )
+             start = mid +1;
+          else if(target == nums[mid])
+             return mid; 
+          else
+             end = mid -1;
+        }
+        return start;
+           }
+        }
+
+
+Q9.   Given an array of integers nums and an integer target, return indices of the two 
+      numbers such that they add up to target.
+      You may assume that each input would have exactly one solution, and you may 
+      not use the same element twice.
+      You can return the answer in any order.
+      Example 1:
+      Input: nums = [2,7,11,15], target = 9
+      Output: [0,1]
+      Explanation: Because nums[0] + nums[1] == 9, we return [0, 1].
+
+
+  Sol(9)-  class Solution{
+           public static int[] twoSum(int[] nums, int target) {
+                int n = nums.length;
+                for (int i = 0; i < n; i++) {
+                    for (int j = i + 1; j < n; j++) {
+                        if (nums[i] + nums[j] == target) {
+                            return new int[]{i, j};  // return indices
+                        }
+                    }
+                }
+                return new int[]{}; // in case no solution found
+            }
+        }
+
+
+Q10. You are given an array arr[] of non-negative numbers. Each number tells you 
+      the maximum number of steps you can jump forward from that position.
+      For example:
+      • If arr[i] = 3, you can jump to index i + 1, i + 2, or i + 3 from position i.
+      • If arr[i] = 0, you cannot jump forward from that position.
+      Your task is to find the minimum number of jumps needed to move from 
+      the first position in the array to the last position.
+      Note: Return -1 if you can't reach the end of the array.
+      Examples :
+      Input: arr[] = [1, 3, 5, 8, 9, 2, 6, 7, 6, 8, 9]
+      Output: 3 
+      Explanation: First jump from 1st element to 2nd element with value 3. From here 
+      we jump to 5th element with value 9, and from here we will jump to the last.
+
+
+Sol(10)-   class Solution {
+            public int minJumps(int[] arr) {
+                // code here
+                int max = 0;
+                int maxRange =0;
+                int jump =0;
+                int n = arr.length;
+                for(int i=0; i<n; i++){
+                    max = Math.max(max, i+arr[i]);
+                    if(maxRange == i){
+                        maxRange =max;
+                        jump++;
+                        if(maxRange >= n-1){
+                            return jump;
+                        }
+                    }
+                }
+                return -1;
+            }
+        } 
+
+
+
+

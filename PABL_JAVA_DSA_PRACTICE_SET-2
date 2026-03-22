@@ -1,0 +1,382 @@
+Q1. Given an array arr[] of positive integers, where each value represents the number of 
+    chocolates in a packet. Each packet can have a variable number of chocolates. There 
+    are m students, the task is to distribute chocolate packets among m students such that -
+    i. Each student gets exactly one packet.
+    ii. The difference between maximum number of chocolates given to a student and 
+    minimum number of chocolates given to a student is minimum and return that 
+    minimum possible difference.
+    Examples:
+    Input: arr = [3, 4, 1, 9, 56, 7, 9, 12], m = 5
+    Output: 6
+    Explanation: The minimum difference between maximum chocolates and minimum 
+    chocolates is 9 - 3 = 6 by choosing following m packets :[3, 4, 9, 7, 9].
+    Input: arr = [7, 3, 2, 4, 9, 12, 56], m = 3
+    Output: 2
+    Explanation: The minimum difference between maximum chocolates and minimum 
+    chocolates is 4 - 2 = 2 by choosing following m packets :[3, 2, 4].
+    Input: arr = [3, 4, 1, 9, 56], m = 5
+    Output: 55
+
+
+Sol(1)-   // User function Template for Java
+            import java.util.*;
+            class Solution {
+                public int findMinDiff(ArrayList<Integer> arr, int m) {
+                    // your code here
+                    if(arr.size() < m){ //if size of arr < number of student
+                        return -1;
+                    }
+                    int result = Integer.MAX_VALUE;
+                    Collections.sort(arr);
+                   
+                    for(int i=0; i<arr.size()-m+1; i++){
+                         int min=arr.get(i);
+                         int max = arr.get(i+m-1);
+                          result = Math.min(result, max-min);
+                          
+                    }
+                    return result;
+    }
+}
+
+
+
+Q2.  Given a number x and an array of integers arr, find the smallest subarray with sum 
+      greater than the given value. If such a subarray do not exist return 0 in that case.
+      Examples:
+      Input: x = 51, arr[] = [1, 4, 45, 6, 0, 19]
+      Output: 3
+      Explanation: Minimum length subarray is [4, 45, 6]
+      Input: x = 100, arr[] = [1, 10, 5, 2, 7]
+      Output: 0
+      Explanation: No subarray exist
+
+
+Sol(2)-  import java.util.ArrayList;
+
+          class Solution {
+              public static int smallestSubWithSum(int x, int[] arr) {
+                  int i = 0;
+                  int j = 0;
+                  int ans = Integer.MAX_VALUE;
+                  int sum = 0;
+          
+                  while (i < arr.length) {
+                      sum += arr[i];
+          
+                      while (sum > x) {
+                          ans = Math.min(ans, i - j + 1);
+                          sum -= arr[j];
+                          j++;
+                      }
+                      i++;
+                  }
+          
+                  // If no subarray found, return 0
+                  return (ans == Integer.MAX_VALUE) ? 0 : ans;
+              }
+          }
+
+
+
+Q3.     Given an array and a range a, b. The task is to partition the array around the range 
+        such that the array is divided into three parts.
+        1) All elements smaller than a come first.
+        2) All elements in range a to b come next.
+        3) All elements greater than b appear in the end.
+        The individual elements of three sets can appear in any order. You are required to 
+        return the modified array.
+        Note: The generated output is true if you modify the given array successfully. 
+        Otherwise false.
+        Geeky Challenge: Solve this problem in O(n) time complexity.
+        Examples:
+        Input: arr[] = [1, 2, 3, 3, 4], a = 1, b = 2
+        Output: true
+        Explanation: One possible arrangement is: {1, 2, 3, 3, 4}. If you return a valid 
+        arrangement, output will be true.
+        Input: arr[] = [1, 4, 3, 6, 2, 1], a = 1, b = 3
+        Output: true
+        Explanation: One possible arrangement is: {1, 3, 2, 1, 4, 6}. If you return a valid 
+        arrangement, output will be true.
+
+Sol(3)-  class Solution {
+          // Function to partition the array around the range such
+          // that array is divided into three parts.
+          public void threeWayPartition(int arr[], int a, int b) {
+              // code here
+             int i=0;
+             int j=arr.length-1;
+             int idx =0;
+             while(i<=j){
+                 if(arr[i]<a){
+                     int temp = arr[i];
+                     arr[i] = arr[idx];
+                     arr[idx]= temp;
+                     i++;
+                     idx++;
+                 }
+                 else if(arr[i]>= a && arr[i]<=b){
+                     i++;
+                 }
+                 else if(arr[i]> b){
+                     int temp = arr[i];
+                     arr[i]= arr[j];
+                     arr[j] = temp;
+                     j--;
+                 }
+             }
+              
+          }
+      }
+
+Q4.   Given an array arr and a number k. One can apply a swap operation on the array any 
+      number of times, i.e choose any two index i and j (i < j) and swap arr[i] , arr[j] . Find 
+      the minimum number of swaps required to bring all the numbers less than or equal 
+      to k together, i.e. make them a contiguous subarray.
+      Examples :
+      Input: arr[] = [2, 1, 5, 6, 3], k = 3
+      Output: 1
+      Explanation: To bring elements 2, 1, 3 together, swap index 2 with 4 (0-based 
+      indexing), i.e. element arr[2] = 5 with arr[4] = 3 such that final array will be- arr[] = [2, 
+      1, 3, 6, 5]
+      Input: arr[] = [2, 7, 9, 5, 8, 7, 4], k = 6 
+      Output: 2 
+      Explanation: To bring elements 2, 5, 4 together, swap index 0 with 2 (0-based 
+      indexing) and index 4 with 6 (0-based indexing) such that final array will be- arr[] = 
+      [9, 7, 2, 5, 4, 7, 8]
+      Input: arr[] = [2, 4, 5, 3, 6, 1, 8], k = 6 
+      Output: 0
+
+
+Sol(4)-   class Solution {
+          int minSwap(int[] arr, int k) {
+                
+                int n = arr.length;
+                int good = 0;
+                for(int i = 0; i < n; i++) {
+                    if(arr[i] <= k) {
+                        good++;
+                    }
+                }
+                int bad = 0;
+                for(int i = 0; i < good; i++) {
+                    if(arr[i] > k) {
+                        bad++;
+                    }
+                }
+                int ans = bad;
+                for(int i = 0, j = good; j < n; i++, j++) {
+        
+                    if(arr[i] > k) {
+                        bad--;
+                    }
+        
+                    if(arr[j] > k) {
+                        bad++;
+                    }
+        
+                    ans = Math.min(ans, bad);
+                }
+        
+                return ans;
+            }
+}
+
+
+Q5.    Given an array arr[] of positive integers. Return true if all the array elements are 
+        palindrome otherwise, return false.
+        Examples:
+        Input: arr[] = [111, 222, 333, 444, 555]
+        Output: true
+        Explanation:
+        arr[0] = 111, which is a palindrome number.
+        arr[1] = 222, which is a palindrome number.
+        arr[2] = 333, which is a palindrome number.
+        arr[3] = 444, which is a palindrome number.
+        arr[4] = 555, which is a palindrome number.
+        As all numbers are palindrome so This will return true.
+        Input: arr[] = [121, 131, 20]
+        Output: false
+        Explanation: 20 is not a palindrome hence the output is false
+
+
+Sol(5)-   class Solution {
+          public static boolean isPalinArray(int[] arr){
+          for(int i =0; i< arr.length; i++){
+                int n = arr[i];
+                int original = n;
+                int ans =0;
+                while(n >0){
+                int rem =  n%10;
+                ans = ans*10 + rem;
+                  n = n/10;
+               if(original != ans){
+                   return false;
+               }
+             }
+              return true;
+            }
+          }
+
+
+
+Q6.   Given an array arr[] of integers, calculate the median.
+      Examples:
+      Input: arr[] = [90, 100, 78, 89, 67]
+      Output: 89
+      Explanation: After sorting the array middle element is the median 
+      Input: arr[] = [56, 67, 30, 79]
+      Output: 61.5
+      Explanation: In case of even number of elements, average of two middle elements is 
+      the median. 
+      Input: arr[] = [1, 2]
+      Output: 1.5
+      Explanation: The average of both elements will result in 1.5.
+      
+
+
+Sol(6)-  import java.util.Arrays;
+         class Solution {
+            public double findMedian(int[] arr){
+            Arrays.sort(arr);
+            double median;
+            int n = arr,length;
+            if(n%2 ==0){
+              median = (arr[n/2-1] + arr[n/2]) /2.0;
+            }
+            else{
+              median = arr[n/2];
+            }
+              return median;
+             }
+          }
+
+
+
+Q7.   You are given a rectangular matrix mat[][] of size n x m, and your task is to return an 
+        array while traversing the matrix in spiral form.
+        Examples:
+        Input: mat[][] = [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]]
+        Output: [1, 2, 3, 4, 8, 12, 16, 15, 14, 13, 9, 5, 6, 7, 11, 10]
+        Explanation: 
+        Input: mat[][] = [[1, 2, 3, 4, 5, 6], [7, 8, 9, 10, 11, 12], [13, 14, 15, 16, 17, 18]]
+        Output: [1, 2, 3, 4, 5, 6, 12, 18, 17, 16, 15, 14, 13, 7, 8, 9, 10, 11]
+        Explanation: Applying same technique as shown above.
+        Input: mat[][] = [[32, 44, 27, 23], [54, 28, 50, 62]]
+        Output: [32, 44, 27, 23, 62, 50, 28, 54]
+        Explanation: Applying same technique as shown above, output will be [32, 44, 27, 23, 
+        62, 50, 28, 54].
+
+Sol(7)-   import java.util.*;
+          class Solution {
+              public ArrayList<Integer> spirallyTraverse(int[][] mat) {
+                  // code here
+                  int n = mat.length;
+                  int m = mat[0].length;
+                  
+                  int left =0, right = m-1;
+                  int top =0, bottom = n-1;
+                  ArrayList<Integer> ans = new ArrayList<>();
+                  while(top <= bottom && left <= right){
+                      for(int i=left; i<=right; i++){
+                          ans.add(mat[top][i]);
+                      }
+                      top++;
+                      for(int i=top; i<= bottom; i++){
+                          ans.add(mat[i][right]);
+                      }
+                      right--;
+                      if(top <= bottom){
+                      for(int i= right; i>= left; i--){
+                          ans.add(mat[bottom][i]);
+                      }
+                      bottom--;
+                      }
+                      if(left <= right){
+                          for(int i = bottom; i >= top; i--){
+                              ans.add(mat[i][left]);
+                          }
+                          left++;
+                      }
+                  }
+                  return ans;
+              }
+          }
+
+
+
+Q8. You are given an m x n integer matrix matrix with the following two properties:
+• Each row is sorted in non-decreasing order
+The first integer of each row is greater than the last integer of the previous row.
+Given an integer target, return true if target is in matrix or false otherwise.
+You must write a solution in O(log(m * n)) time complexity.
+Example 1:
+Input: matrix = [[1,3,5,7],[10,11,16,20],[23,30,34,60]], target = 3
+Output: true
+Example 2:
+Input: matrix = [[1,3,5,7],[10,11,16,20],[23,30,34,60]], target = 13
+Output: false
+
+
+Sol(8)-  class Solution {
+           public boolean searchMatrix(int[][] matrix, int target) {
+              for(int i=0; i<matrix.lenght; i++){
+                  for(int j=0; j<matrix[0].length; j++){
+                     if(matrix[i][j] == target){
+                        return true;
+                    }
+                  }
+                 }
+              return false;
+              }
+            }
+          
+
+Q9.   Given a row-wise sorted matrix mat[][] of size n*m, where the number of rows and 
+      columns is always odd. Return the median of the matrix.
+      Examples:
+      Input: mat[][] = [[1, 3, 5], 
+       [2, 6, 9], 
+       [3, 6, 9]]
+      Output: 5
+      
+      Explanation: Sorting matrix elements gives us [1, 2, 3, 3, 5, 6, 6, 9, 9]. Hence, 5 is 
+      median.
+      Input: mat[][] = [[2, 4, 9],
+       [3, 6, 7],
+       [4, 7, 10]]
+      Output: 6
+      Explanation: Sorting matrix elements gives us [2, 3, 4, 4, 6, 7, 7, 9, 10]. Hence, 6 is 
+      median.
+      Input: mat = [[3], [4], [8]]
+      Output: 4
+      Explanation: Sorting matrix elements gives us [3, 4, 8]. Hence, 4 is median
+
+
+
+Sol(9)-   import java.util.ArrayList;
+          class Solution {
+              public int median(int[][] mat) {
+                  // code here
+                  ArrayList<Integer> list = new ArrayList<>();
+                  for(int i=0; i<mat.length; i++){
+                      for(int j=0; j<mat[i].length; j++){
+                          list.add(mat[i][j]);
+                      }
+                  }
+                  Collections.sort(list);
+                  int n = list.size();
+                  int mediann;
+                   if(n%2 == 0){
+                       mediann = (list.get(n/2 - 1) + list.get(n/2)) / 2;
+                  }
+                  else{
+                      
+                  mediann = list.get(n/2);
+             }
+             return mediann;
+              }
+          }
+                    
+          
+          
